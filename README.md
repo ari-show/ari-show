@@ -58,6 +58,9 @@
 - [エンジニアがこの先生き残るためのカンファレンス](https://kinoko-conf.dev/)
 - [PHPerKaigi2025(core)](https://phperkaigi.jp/2025/)
 - [PHP Conference Japan 2025](https://phpcon.php.gr.jp/2025/)
+- [CoLab Conf（コラコン）\~U35エンジニアの生存戦略を考えるテックカンファレンス\~](https://supporterz-seminar.connpass.com/event/355775/)
+- [大吉祥寺.pm 2025](https://kichijojipm.connpass.com/event/361631/)
+- [iOSDC Japan 2025 (core, NOC)](https://iosdc.jp/2025/)
 
 ## participation
 - [phpcon_odawara2024](https://phpcon-odawara.jp/)
