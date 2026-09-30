@@ -1,13 +1,13 @@
-<h1>Hi 👋, I'm ShotaArima</h1>
+<h1>Hi 👋, I'm ari-show</h1>
 <div align="left">
-  <img src="https://visitor-badge.laobi.icu/badge?page_id=ShotaArima.ShotaArima&right_color=aquamarine"  />
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=ari-show.ari-show&right_color=aquamarine"  />
 </div>
 <div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=ShotaArima&hide_title=false&hide_rank=false&show_icons=true&include_all_commits=true&count_private=true&disable_animations=false&theme=dracula&locale=en&hide_border=false&order=1" height="150" alt="stats graph"  />
+  <img src="https://github-readme-stats.vercel.app/api?username=ari-show&hide_title=false&hide_rank=false&show_icons=true&include_all_commits=true&count_private=true&disable_animations=false&theme=dracula&locale=en&hide_border=false&order=1" height="150" alt="stats graph"  />
   
-  <img src="https://streak-stats.demolab.com?user=ShotaArima&locale=en&mode=daily&theme=dracula&hide_border=false&border_radius=5&order=3" height="150" alt="streak graph"  />
-  <img src="https://github-profile-trophy.vercel.app?username=ShotaArima&theme=dracula&column=-1&row=1&margin-w=8&margin-h=8&no-bg=false&no-frame=false&order=4" height="150" alt="trophy graph"  />
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=ShotaArima&radius=16&theme=react&area=true&order=5" height="300" alt="activity-graph graph"  /><img src="https://github-readme-stats.vercel.app/api/top-langs?username=ShotaArima&locale=en&hide_title=false&layout=compact&card_width=420&langs_count=100&theme=dracula&hide_border=false" height="300" alt="languages graph" />
+  <img src="https://streak-stats.demolab.com?user=ari-show&locale=en&mode=daily&theme=dracula&hide_border=false&border_radius=5&order=3" height="150" alt="streak graph"  />
+  <img src="https://github-profile-trophy.vercel.app?username=ari-show&theme=dracula&column=-1&row=1&margin-w=8&margin-h=8&no-bg=false&no-frame=false&order=4" height="150" alt="trophy graph"  />
+  <img src="https://github-readme-activity-graph.vercel.app/graph?username=ari-show&radius=16&theme=react&area=true&order=5" height="300" alt="activity-graph graph"  /><img src="https://github-readme-stats.vercel.app/api/top-langs?username=ari-show&locale=en&hide_title=false&layout=compact&card_width=420&langs_count=100&theme=dracula&hide_border=false" height="300" alt="languages graph" />
   
 </div>
 
