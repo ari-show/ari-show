@@ -66,6 +66,12 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: scripts/uv.lock
+
+      - name: Install (locked)
+        run: uv sync --locked --project scripts
 
       - name: Collect roles
         id: roles
@@ -98,7 +104,7 @@ jobs:
           IN_ROLES: ${{ steps.roles.outputs.roles }}
           IN_NOTE: ${{ inputs.note }}
         run: |
-          uv run scripts/add_conference.py --yes \
+          uv run --project scripts scripts/add_conference.py --yes \
             --name "$IN_NAME" --url "$IN_URL" --date "$IN_DATE" --end "$IN_END" \
             --roles "$IN_ROLES" --note "$IN_NOTE"
 

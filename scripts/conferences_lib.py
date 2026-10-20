@@ -1,4 +1,5 @@
 """data/conferences.yml の読み書き・検証と README の Conferences セクション生成。"""
+
 from __future__ import annotations
 
 import datetime as dt
@@ -35,6 +36,7 @@ class ValidationError(Exception):
 
 # ---------------------------------------------------------------- I/O
 
+
 def load() -> list[dict]:
     data = yaml.safe_load(DATA_PATH.read_text(encoding="utf-8")) or []
     if not isinstance(data, list):
@@ -70,6 +72,7 @@ def _inline_roles(m: re.Match) -> str:
 
 
 # ---------------------------------------------------------------- validation
+
 
 def normalize(e: dict, where: str = "") -> dict:
     """型をそろえつつ検証する。date/end は 'YYYY-MM-DD' 文字列、roles は list に統一。"""
@@ -121,9 +124,11 @@ def _to_date_str(v, label: str) -> str:
 
 # ---------------------------------------------------------------- render
 
+
 def _badge(role: str) -> str:
     label, ja, color = ROLES[role]
-    return f'<img src="https://img.shields.io/badge/-{label}-{color}?style=flat-square" alt="{ja}" title="{ja}" />'
+    src = f"https://img.shields.io/badge/-{label}-{color}?style=flat-square"
+    return f'<img src="{src}" alt="{ja}" title="{ja}" />'
 
 
 def _fmt_date(e: dict) -> str:
@@ -145,7 +150,7 @@ def _note_html(note: str) -> str:
     """Markdown のリンク記法だけ <a> に変換し、残りはエスケープする。"""
     out, pos = [], 0
     for m in _MD_LINK.finditer(note):
-        out.append(html.escape(note[pos:m.start()]))
+        out.append(html.escape(note[pos : m.start()]))
         out.append(f'<a href="{html.escape(m.group(2), quote=True)}">{html.escape(m.group(1))}</a>')
         pos = m.end()
     out.append(html.escape(note[pos:]))
@@ -167,7 +172,8 @@ def render_table(entries: list[dict]) -> str:
     counts = {r: sum(1 for e in entries if r in e["roles"]) for r in ROLES}
     summary = " ・ ".join(f"{ROLES[r][1]} {counts[r]}" for r in ROLES if counts[r])
     return (
-        "<!-- このセクションは data/conferences.yml から scripts/build_readme.py で自動生成されます。直接編集しないでください。 -->\n"
+        "<!-- このセクションは data/conferences.yml から scripts/build_readme.py で自動生成されます。"
+        "直接編集しないでください。 -->\n"
         f'<p align="center"><sub>{summary}</sub></p>\n\n'
         "<table>\n"
         "  <thead>\n"

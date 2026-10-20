@@ -1,8 +1,3 @@
-#!/usr/bin/env -S uv run --quiet --script
-# /// script
-# requires-python = ">=3.9"
-# dependencies = ["pyyaml>=6"]
-# ///
 """カンファレンス履歴を1件追加し、README を再生成し、必要なら PR まで作る。
 
 対話モード (質問に答えるだけ):
@@ -14,6 +9,7 @@
       --name "PHPerKaigi 2026" --url https://phperkaigi.jp/2026/ \
       --date 2026-03-20 --end 2026-03-22 --roles core,noc --note "..."
 """
+
 from __future__ import annotations
 
 import argparse
@@ -24,22 +20,14 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from conferences_lib import (  # noqa: E402
-    DATA_PATH,
-    README_PATH,
-    ROLES,
-    ROOT,
-    ValidationError,
-    load,
-    normalize,
-    render_readme,
-    save,
-)
+import conferences_lib as lib
+from conferences_lib import ROLES, ValidationError
 
 BOLD, DIM, GREEN, CYAN, RED, RESET = "\033[1m", "\033[2m", "\033[32m", "\033[36m", "\033[31m", "\033[0m"
 
 
 # ---------------------------------------------------------------- prompts
+
 
 def ask(label: str, default: str | None = None, required: bool = False, hint: str = "") -> str:
     suffix = f" {DIM}[{default}]{RESET}" if default else ""
@@ -89,6 +77,7 @@ def ask_roles() -> list[str]:
 
 # ---------------------------------------------------------------- git / PR
 
+
 def slugify(s: str) -> str:
     s = re.sub(r"[^A-Za-z0-9]+", "-", s).strip("-").lower()
     return s or dt.date.today().strftime("%Y%m%d")
@@ -96,15 +85,17 @@ def slugify(s: str) -> str:
 
 def run(cmd: list[str]) -> None:
     print(f"{DIM}$ {' '.join(cmd)}{RESET}")
-    subprocess.run(cmd, cwd=ROOT, check=True, text=True)
+    subprocess.run(cmd, cwd=lib.ROOT, check=True, text=True)
 
 
 def create_pr(entry: dict) -> None:
-    if subprocess.run(["gh", "auth", "status"], cwd=ROOT, capture_output=True).returncode != 0:
+    if subprocess.run(["gh", "auth", "status"], cwd=lib.ROOT, capture_output=True).returncode != 0:
         sys.exit("gh にログインしていません。`gh auth login` を実行してから --pr を使ってください")
-    status = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout
+    status = subprocess.run(
+        ["git", "status", "--porcelain"], cwd=lib.ROOT, capture_output=True, text=True
+    ).stdout
     changed = {line[3:] for line in status.splitlines()}
-    allowed = {str(DATA_PATH.relative_to(ROOT)), str(README_PATH.relative_to(ROOT))}
+    allowed = {str(lib.DATA_PATH.relative_to(lib.ROOT)), str(lib.README_PATH.relative_to(lib.ROOT))}
     if changed - allowed:
         sys.exit(f"他の未コミット変更があります。先に片付けてください: {sorted(changed - allowed)}")
 
@@ -115,13 +106,11 @@ def create_pr(entry: dict) -> None:
         + ["", "Created by `scripts/add_conference.py`."]
     )
     run(["git", "switch", "-c", branch])
-    run(["git", "add", str(DATA_PATH), str(README_PATH)])
+    run(["git", "add", str(lib.DATA_PATH), str(lib.README_PATH)])
     run(["git", "commit", "-q", "-m", title])
     run(["git", "push", "-u", "origin", branch])
     run(["gh", "pr", "create", "--title", title, "--body", body])
 
-
-# ---------------------------------------------------------------- main
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -143,15 +132,21 @@ def main() -> int:
         "name": a.name or ask("name", required=True, hint="カンファレンス名"),
         "url": a.url or ask("url", required=True, hint="https://..."),
         "date": a.date or ask_date("date", required=True, hint="開催日 YYYY-MM-DD。複数日なら初日"),
-        "end": a.end if a.end is not None else (ask_date("end", required=False, hint="最終日 YYYY-MM-DD, 1日開催なら空") if interactive else ""),
+        "end": a.end
+        if a.end is not None
+        else (
+            ask_date("end", required=False, hint="最終日 YYYY-MM-DD, 1日開催なら空") if interactive else ""
+        ),
         "roles": a.roles or ask_roles(),
-        "note": a.note if a.note is not None else (ask("note", hint="登壇タイトル / 記事やスライドのリンク, 任意") if interactive else ""),
+        "note": a.note
+        if a.note is not None
+        else (ask("note", hint="登壇タイトル / 記事やスライドのリンク, 任意") if interactive else ""),
     }
     raw = {k: v for k, v in raw.items() if v}
 
     try:
-        entry = normalize(raw)
-        entries = load()
+        entry = lib.normalize(raw)
+        entries = lib.load()
     except ValidationError as e:
         print(f"{RED}error:{RESET} {e}", file=sys.stderr)
         return 2
@@ -168,11 +163,15 @@ def main() -> int:
             return 1
 
     entries.append(entry)
-    save(entries)
-    README_PATH.write_text(render_readme(README_PATH.read_text(encoding="utf-8"), entries), encoding="utf-8")
-    print(f"\n{GREEN}✔{RESET} {DATA_PATH.relative_to(ROOT)} と README.md を更新しました")
+    lib.save(entries)
+    lib.README_PATH.write_text(
+        lib.render_readme(lib.README_PATH.read_text(encoding="utf-8"), entries), encoding="utf-8"
+    )
+    print(f"\n{GREEN}✔{RESET} {lib.DATA_PATH.relative_to(lib.ROOT)} と README.md を更新しました")
 
-    do_pr = a.pr or (interactive and ask("PR を作成しますか?", default="n", hint="y/n").lower() in ("y", "yes"))
+    do_pr = a.pr or (
+        interactive and ask("PR を作成しますか?", default="n", hint="y/n").lower() in ("y", "yes")
+    )
     if do_pr:
         create_pr(entry)
     else:
@@ -185,4 +184,4 @@ if __name__ == "__main__":
         raise SystemExit(main())
     except KeyboardInterrupt:
         print("\n中断しました")
-        raise SystemExit(130)
+        raise SystemExit(130) from None

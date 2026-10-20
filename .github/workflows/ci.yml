@@ -1,0 +1,35 @@
+name: CI
+
+# scripts/ の lint・テストと、data/conferences.yml と README のずれを確認します。
+# ずれていたら `cd scripts && uv run build_readme.py` を実行してコミットしてください。
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  scripts:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: scripts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: scripts/uv.lock
+
+      - name: Install (locked)
+        run: uv sync --locked
+
+      - name: Lint
+        run: uv run ruff check . && uv run ruff format --check .
+
+      - name: Test
+        run: uv run pytest
+
+      - name: README is generated from data/conferences.yml
+        run: uv run build_readme.py --check
