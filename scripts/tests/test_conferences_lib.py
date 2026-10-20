@@ -11,22 +11,26 @@ import conferences_lib as lib
 
 
 def test_normalize_minimal_entry():
+    """必須4項目だけの入力がそのまま正規化される"""
     out = lib.normalize(valid_entry())
     assert out == {"name": "Conf", "url": "https://example.com/", "date": "2026-01-10", "roles": ["attendee"]}
 
 
 def test_normalize_accepts_date_objects_and_strings():
+    """date 型でも文字列でも YYYY-MM-DD 文字列に揃う"""
     out = lib.normalize(valid_entry(date=dt.date(2026, 1, 10), end="2026-01-12"))
     assert out["date"] == "2026-01-10"
     assert out["end"] == "2026-01-12"
 
 
 def test_normalize_roles_from_string_dedup_and_canonical_order():
+    """カンマ区切り文字列の roles が重複排除され定義順に並ぶ"""
     out = lib.normalize(valid_entry(roles="noc, core,noc speaker"))
     assert out["roles"] == ["speaker", "core", "noc"]
 
 
 def test_normalize_strips_and_drops_empty_note():
+    """note は前後空白を除去し、空なら項目ごと消える"""
     assert "note" not in lib.normalize(valid_entry(note=""))
     assert lib.normalize(valid_entry(note="  x  "))["note"] == "x"
 
@@ -45,11 +49,13 @@ def test_normalize_strips_and_drops_empty_note():
     ],
 )
 def test_normalize_rejects_invalid(over, message):
+    """不正な入力 (必須欠落・URL・日付・end<date・不明 role・不明フィールド) を弾く"""
     with pytest.raises(lib.ValidationError, match=message):
         lib.normalize(valid_entry(**over))
 
 
 def test_normalize_error_includes_location():
+    """エラー文の先頭に何件目かの位置情報が付く"""
     with pytest.raises(lib.ValidationError, match=r"^#3: "):
         lib.normalize(valid_entry(url="nope"), where="#3")
 
@@ -58,6 +64,7 @@ def test_normalize_error_includes_location():
 
 
 def test_load_returns_normalized_entries(workspace):
+    """YAML を読むとファイル順のまま正規化済みで返る"""
     entries = lib.load()
     assert [e["name"] for e in entries] == ["Old Conf 2024", "New Conf 2025"]
     assert entries[1]["roles"] == ["core", "noc"]
@@ -65,6 +72,7 @@ def test_load_returns_normalized_entries(workspace):
 
 
 def test_save_keeps_header_inline_roles_and_unquoted_dates(workspace):
+    """保存後もヘッダーコメント・roles の [] 表記・引用符なし日付・空行1つ区切りが保たれる"""
     entries = lib.load()
     entries.append(lib.normalize(valid_entry(name="Added", roles=["speaker", "staff"], end="2026-01-11")))
     lib.save(entries)
@@ -78,6 +86,7 @@ def test_save_keeps_header_inline_roles_and_unquoted_dates(workspace):
 
 
 def test_save_then_load_round_trip_is_stable(workspace):
+    """保存→読込→保存を繰り返しても内容が変わらない"""
     lib.save(lib.load())
     first = lib.DATA_PATH.read_text(encoding="utf-8")
     lib.save(lib.load())
@@ -97,10 +106,12 @@ def test_save_then_load_round_trip_is_stable(workspace):
     ],
 )
 def test_fmt_date(entry, expected):
+    """複数日開催の日付が重複部分を省略した表記になる"""
     assert lib._fmt_date(entry) == expected
 
 
 def test_note_html_converts_markdown_links_and_escapes_rest():
+    """note 内の [text](url) だけ <a> になり、残りは HTML エスケープされる"""
     out = lib._note_html("see [a <b>](https://x.test/?q=1&r=2) & [c](https://y.test)")
     assert out == (
         'see <a href="https://x.test/?q=1&amp;r=2">a &lt;b&gt;</a> &amp; <a href="https://y.test">c</a>'
@@ -108,6 +119,7 @@ def test_note_html_converts_markdown_links_and_escapes_rest():
 
 
 def test_note_html_ignores_non_http_links():
+    """http(s) 以外の URL はリンク化しない"""
     assert lib._note_html("[x](javascript:alert(1))") == "[x](javascript:alert(1))"
 
 
@@ -115,6 +127,7 @@ def test_note_html_ignores_non_http_links():
 
 
 def test_render_table_sorted_newest_first_with_badges_and_summary(workspace):
+    """表は新しい日付が上、role バッジは定義順、0件の role はサマリに出ない"""
     table = lib.render_table(lib.load())
     assert table.index("New Conf 2025") < table.index("Old Conf 2024")
     assert "2025-09-19~21" in table
@@ -126,6 +139,7 @@ def test_render_table_sorted_newest_first_with_badges_and_summary(workspace):
 
 
 def test_render_readme_replaces_only_marker_section(workspace):
+    """README のマーカー区間だけが置き換わり前後は無傷"""
     readme = lib.README_PATH.read_text(encoding="utf-8")
     out = lib.render_readme(readme, lib.load())
     assert out.startswith("# Title\n\n## 🎤 Conferences\n\n<!-- CONFERENCES:START -->\n")
@@ -135,11 +149,13 @@ def test_render_readme_replaces_only_marker_section(workspace):
 
 
 def test_render_readme_is_idempotent(workspace):
+    """生成済み README に再度かけても結果が同じ"""
     entries = lib.load()
     once = lib.render_readme(lib.README_PATH.read_text(encoding="utf-8"), entries)
     assert lib.render_readme(once, entries) == once
 
 
 def test_render_readme_requires_markers():
+    """マーカーがない README はエラーになる"""
     with pytest.raises(lib.ValidationError, match="CONFERENCES:START"):
         lib.render_readme("no markers here", [])

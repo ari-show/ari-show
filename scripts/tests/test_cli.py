@@ -12,6 +12,7 @@ import conferences_lib as lib
 
 
 def test_build_writes_readme_then_reports_up_to_date(workspace, capsys):
+    """build で README が書き換わり、2回目は up to date と報告する"""
     assert build_readme.main([]) == 0
     assert "New Conf 2025" in lib.README_PATH.read_text(encoding="utf-8")
     assert build_readme.main([]) == 0
@@ -19,12 +20,14 @@ def test_build_writes_readme_then_reports_up_to_date(workspace, capsys):
 
 
 def test_build_check_fails_when_stale(workspace, capsys):
+    """--check は README が古いと失敗し、ファイルは書き換えない"""
     assert build_readme.main(["--check"]) == 1
     assert "out of date" in capsys.readouterr().err
     assert "old content" in lib.README_PATH.read_text(encoding="utf-8")  # --check は書き換えない
 
 
 def test_build_reports_validation_error(workspace, capsys):
+    """YAML が不正なら終了コード2でエラー内容を stderr に出す"""
     lib.DATA_PATH.write_text(
         "- name: broken\n  url: https://x\n  date: nope\n  roles: [staff]\n", encoding="utf-8"
     )
@@ -41,6 +44,7 @@ def run_add(monkeypatch, *argv: str) -> int:
 
 
 def test_add_non_interactive_appends_and_rebuilds(workspace, monkeypatch):
+    """--yes 付きの非対話追加で YAML 末尾に追記され README も更新される"""
     rc = run_add(
         monkeypatch,
         "--yes",
@@ -73,6 +77,7 @@ def test_add_non_interactive_appends_and_rebuilds(workspace, monkeypatch):
 
 
 def test_add_treats_empty_optional_flags_as_absent(workspace, monkeypatch):
+    """Actions から来る空文字の --end / --note は未指定扱いになる"""
     # Actions からは end / note が空文字で渡ってくる
     rc = run_add(
         monkeypatch,
@@ -95,6 +100,7 @@ def test_add_treats_empty_optional_flags_as_absent(workspace, monkeypatch):
 
 
 def test_add_rejects_duplicate_url_and_date(workspace, monkeypatch, capsys):
+    """同じ url と date の組は重複として弾き、件数が増えない"""
     rc = run_add(
         monkeypatch,
         "--yes",
@@ -121,6 +127,7 @@ def test_add_rejects_duplicate_url_and_date(workspace, monkeypatch, capsys):
     ],
 )
 def test_add_rejects_invalid_input_without_writing(workspace, monkeypatch, capsys, argv, message):
+    """不正入力 (日付・role・end<date) では何もファイルに書かない"""
     before = lib.DATA_PATH.read_text(encoding="utf-8")
     rc = run_add(monkeypatch, "--yes", "--name", "bad", "--url", "https://x.test/", *argv)
     assert rc == 2
@@ -129,6 +136,7 @@ def test_add_rejects_invalid_input_without_writing(workspace, monkeypatch, capsy
 
 
 def test_add_interactive_flow(workspace, monkeypatch, capsys):
+    """対話モードで質問に順に答えると番号指定の roles で追加される"""
     answers = iter(
         [
             "YAPC::Fukuoka 2026",  # name
@@ -151,6 +159,7 @@ def test_add_interactive_flow(workspace, monkeypatch, capsys):
 
 
 def test_add_interactive_reprompts_on_bad_date_and_roles(workspace, monkeypatch):
+    """対話モードで日付や role を間違えると再入力を求め、最終的に正しい値で追加される"""
     answers = iter(["C", "https://c.test/", "bad-date", "2026-01-01", "", "9", "boss", "2", "", "y", "n"])
     monkeypatch.setattr("builtins.input", lambda _prompt="": next(answers))
     assert run_add(monkeypatch) == 0
@@ -158,6 +167,7 @@ def test_add_interactive_reprompts_on_bad_date_and_roles(workspace, monkeypatch)
 
 
 def test_add_interactive_abort_writes_nothing(workspace, monkeypatch):
+    """確認で n と答えると終了コード1で何も書かない"""
     answers = iter(["C", "https://c.test/", "2026-01-01", "", "3", "", "n"])
     monkeypatch.setattr("builtins.input", lambda _prompt="": next(answers))
     before = lib.DATA_PATH.read_text(encoding="utf-8")
