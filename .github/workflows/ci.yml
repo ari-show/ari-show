@@ -1,0 +1,59 @@
+name: CI
+
+# scripts/ (または README 生成に関わる data/ と README.md) が変更されたときに走ります。
+#   - ruff による lint / format チェック
+#   - pytest
+#   - data/conferences.yml と README.md の Conferences セクションがずれていないか
+# ずれていたら `cd scripts && uv run build_readme.py` を実行してコミットしてください。
+
+on:
+  pull_request:
+    paths:
+      - "scripts/**"
+      - "data/**"
+      - "README.md"
+      - ".github/workflows/ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - "data/**"
+      - "README.md"
+      - ".github/workflows/ci.yml"
+  workflow_dispatch:
+
+# 同じブランチで連続 push されたら古い実行は打ち切る
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scripts:
+    name: lint / test / readme-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: scripts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: scripts/uv.lock
+
+      - name: Install (locked)
+        run: uv sync --locked
+
+      - name: Lint (ruff check)
+        run: uv run ruff check --output-format=github .
+
+      - name: Format (ruff format --check)
+        run: uv run ruff format --check .
+
+      - name: Test (pytest)
+        run: uv run pytest
+
+      - name: README is generated from data/conferences.yml
+        run: uv run build_readme.py --check

@@ -1,0 +1,129 @@
+name: Add conference
+
+# Actions タブ → "Add conference" → Run workflow のフォームに入力するだけで、
+# data/conferences.yml に追記 → README 再生成 → PR 作成 まで自動で行います。
+#
+# CLI からも同じことができます:
+#   gh workflow run add-conference.yml \
+#     -f name="PHPerKaigi 2026" -f url=https://phperkaigi.jp/2026/ \
+#     -f date=2026-03-20 -f end=2026-03-22 -f role_core=true -f role_noc=true
+#
+# 前提: Settings → Actions → General → Workflow permissions で
+#       "Allow GitHub Actions to create and approve pull requests" を有効にしておくこと。
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "カンファレンス名"
+        required: true
+        type: string
+      url:
+        description: "リンク先 URL"
+        required: true
+        type: string
+      date:
+        description: "開催日 YYYY-MM-DD (複数日なら初日)"
+        required: true
+        type: string
+      end:
+        description: "最終日 YYYY-MM-DD (複数日開催のときだけ)"
+        required: false
+        type: string
+      role_speaker:
+        description: "登壇者"
+        type: boolean
+        default: false
+      role_core:
+        description: "コアスタッフ"
+        type: boolean
+        default: false
+      role_staff:
+        description: "当日スタッフ"
+        type: boolean
+        default: false
+      role_noc:
+        description: "NOC"
+        type: boolean
+        default: false
+      role_attendee:
+        description: "参加者"
+        type: boolean
+        default: false
+      note:
+        description: "補足: 登壇タイトル、記事やスライドのリンク [text](url) など"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: scripts/uv.lock
+
+      - name: Install (locked)
+        run: uv sync --locked --project scripts
+
+      - name: Collect roles
+        id: roles
+        env:
+          SPEAKER: ${{ inputs.role_speaker }}
+          CORE: ${{ inputs.role_core }}
+          STAFF: ${{ inputs.role_staff }}
+          NOC: ${{ inputs.role_noc }}
+          ATTENDEE: ${{ inputs.role_attendee }}
+        run: |
+          roles=""
+          [ "$SPEAKER"  = "true" ] && roles="$roles,speaker"
+          [ "$CORE"     = "true" ] && roles="$roles,core"
+          [ "$STAFF"    = "true" ] && roles="$roles,staff"
+          [ "$NOC"      = "true" ] && roles="$roles,noc"
+          [ "$ATTENDEE" = "true" ] && roles="$roles,attendee"
+          roles="${roles#,}"
+          if [ -z "$roles" ]; then
+            echo "::error::役割を1つ以上チェックしてください"
+            exit 1
+          fi
+          echo "roles=$roles" >> "$GITHUB_OUTPUT"
+
+      - name: Add entry and rebuild README
+        env:
+          IN_NAME: ${{ inputs.name }}
+          IN_URL: ${{ inputs.url }}
+          IN_DATE: ${{ inputs.date }}
+          IN_END: ${{ inputs.end }}
+          IN_ROLES: ${{ steps.roles.outputs.roles }}
+          IN_NOTE: ${{ inputs.note }}
+        run: |
+          uv run --project scripts scripts/add_conference.py --yes \
+            --name "$IN_NAME" --url "$IN_URL" --date "$IN_DATE" --end "$IN_END" \
+            --roles "$IN_ROLES" --note "$IN_NOTE"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: conference/${{ github.run_id }}
+          title: "Add conference: ${{ inputs.name }} (${{ steps.roles.outputs.roles }})"
+          commit-message: "Add conference: ${{ inputs.name }} (${{ steps.roles.outputs.roles }})"
+          body: |
+            | field | value |
+            |---|---|
+            | name | ${{ inputs.name }} |
+            | url | ${{ inputs.url }} |
+            | date | ${{ inputs.date }} |
+            | end | ${{ inputs.end }} |
+            | roles | ${{ steps.roles.outputs.roles }} |
+            | note | ${{ inputs.note }} |
+
+            Created by the "Add conference" workflow (run by @${{ github.actor }}).
+          labels: conference
+          delete-branch: true
