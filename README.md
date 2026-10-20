@@ -74,7 +74,7 @@
 
 <!-- CONFERENCES:START -->
 <!-- このセクションは data/conferences.yml から scripts/build_readme.py で自動生成されます。直接編集しないでください。 -->
-<p align="center"><sub>登壇者 1 ・ コアスタッフ 3 ・ 当日スタッフ 5 ・ NOC 1 ・ 参加者 6</sub></p>
+<p align="center"><sub>登壇者 2 ・ コアスタッフ 3 ・ 当日スタッフ 5 ・ NOC 1 ・ 参加者 6</sub></p>
 
 <table>
   <thead>
@@ -86,6 +86,12 @@
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td nowrap>2026-09-04</td>
+      <td><a href="https://fresh-engineers.connpass.com/event/402753/">新卒N年目の勉強会&amp;交流会！〜〇〇への誘い〜</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Speaker-bf91f3?style=flat-square" alt="登壇者" title="登壇者" /></td>
+      <td><a href="https://speakerdeck.com/arishow/shashin-kara-hajimaru-unyou-no-hajimekata">資料</a></td>
+    </tr>
     <tr>
       <td nowrap>2025-09-19~21</td>
       <td><a href="https://iosdc.jp/2025/">iOSDC Japan 2025</a></td>
