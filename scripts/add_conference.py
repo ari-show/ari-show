@@ -5,13 +5,14 @@
 # ///
 """カンファレンス履歴を1件追加し、README を再生成し、必要なら PR まで作る。
 
-対話モード (terraform init 風に質問に答えるだけ):
+対話モード (質問に答えるだけ):
   uv run scripts/add_conference.py
   uv run scripts/add_conference.py --pr        # 最後にブランチ作成 → push → gh pr create まで実行
 
 非対話モード (GitHub Actions やワンライナー用):
-  uv run scripts/add_conference.py --name "PHPerKaigi 2026" --url https://phperkaigi.jp/2026/ \
-      --year 2026 --role staff --note core --yes
+  uv run scripts/add_conference.py --yes \
+      --name "PHPerKaigi 2026" --url https://phperkaigi.jp/2026/ \
+      --date 2026-03-20 --end 2026-03-22 --roles core,noc --note "..."
 """
 from __future__ import annotations
 
@@ -30,13 +31,15 @@ from conferences_lib import (  # noqa: E402
     ROOT,
     ValidationError,
     load,
+    normalize,
     render_readme,
     save,
-    validate,
 )
 
-BOLD, DIM, GREEN, CYAN, RESET = "\033[1m", "\033[2m", "\033[32m", "\033[36m", "\033[0m"
+BOLD, DIM, GREEN, CYAN, RED, RESET = "\033[1m", "\033[2m", "\033[32m", "\033[36m", "\033[31m", "\033[0m"
 
+
+# ---------------------------------------------------------------- prompts
 
 def ask(label: str, default: str | None = None, required: bool = False, hint: str = "") -> str:
     suffix = f" {DIM}[{default}]{RESET}" if default else ""
@@ -50,30 +53,50 @@ def ask(label: str, default: str | None = None, required: bool = False, hint: st
             return default
         if value or not required:
             return value
-        print("  必須項目です")
+        print(f"  {RED}必須項目です{RESET}")
 
 
-def ask_role(default: str | None) -> str:
-    labels = {"speaker": "登壇", "staff": "スタッフ", "attendee": "参加"}
-    for i, r in enumerate(ROLES, 1):
-        print(f"  {CYAN}{i}{RESET}) {r:<9}{DIM}{labels[r]}{RESET}")
+def ask_date(label: str, required: bool, hint: str) -> str:
     while True:
-        v = ask("role", default=default, required=True, hint="番号 or 名前")
-        if v.isdigit() and 1 <= int(v) <= len(ROLES):
-            return ROLES[int(v) - 1]
-        if v in ROLES:
+        v = ask(label, required=required, hint=hint)
+        if not v:
             return v
-        print(f"  {', '.join(ROLES)} のいずれかを選んでください")
+        try:
+            return dt.date.fromisoformat(v).isoformat()
+        except ValueError:
+            print(f"  {RED}YYYY-MM-DD の形式で入力してください{RESET}")
 
+
+def ask_roles() -> list[str]:
+    keys = list(ROLES)
+    for i, r in enumerate(keys, 1):
+        print(f"  {CYAN}{i}{RESET}) {r:<9}{DIM}{ROLES[r][1]}{RESET}")
+    while True:
+        v = ask("roles", required=True, hint="番号をカンマ区切り。例: 2,4")
+        picked = []
+        for tok in re.split(r"[,\s]+", v):
+            if tok.isdigit() and 1 <= int(tok) <= len(keys):
+                picked.append(keys[int(tok) - 1])
+            elif tok in keys:
+                picked.append(tok)
+            elif tok:
+                picked = None
+                break
+        if picked:
+            return picked
+        print(f"  {RED}1〜{len(keys)} の番号か {', '.join(keys)} で指定してください{RESET}")
+
+
+# ---------------------------------------------------------------- git / PR
 
 def slugify(s: str) -> str:
     s = re.sub(r"[^A-Za-z0-9]+", "-", s).strip("-").lower()
     return s or dt.date.today().strftime("%Y%m%d")
 
 
-def run(cmd: list[str], **kw) -> subprocess.CompletedProcess:
+def run(cmd: list[str]) -> None:
     print(f"{DIM}$ {' '.join(cmd)}{RESET}")
-    return subprocess.run(cmd, cwd=ROOT, check=True, text=True, **kw)
+    subprocess.run(cmd, cwd=ROOT, check=True, text=True)
 
 
 def create_pr(entry: dict) -> None:
@@ -85,10 +108,10 @@ def create_pr(entry: dict) -> None:
     if changed - allowed:
         sys.exit(f"他の未コミット変更があります。先に片付けてください: {sorted(changed - allowed)}")
 
-    branch = f"conference/{slugify(entry['name'])}-{entry['role']}"
-    title = f"Add conference: {entry['name']} ({entry['role']})"
+    branch = f"conference/{slugify(entry['name'])}-{entry['date']}"
+    title = f"Add conference: {entry['name']} ({', '.join(entry['roles'])})"
     body = "\n".join(
-        [f"- **{k}**: {entry[k]}" for k in ("name", "url", "year", "role", "date", "note", "talk") if entry.get(k)]
+        [f"- **{k}**: {', '.join(v) if isinstance(v, list) else v}" for k, v in entry.items()]
         + ["", "Created by `scripts/add_conference.py`."]
     )
     run(["git", "switch", "-c", branch])
@@ -98,15 +121,16 @@ def create_pr(entry: dict) -> None:
     run(["gh", "pr", "create", "--title", title, "--body", body])
 
 
+# ---------------------------------------------------------------- main
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--name")
-    p.add_argument("--url")
-    p.add_argument("--year", type=int)
-    p.add_argument("--role", choices=ROLES)
-    p.add_argument("--date", help="YYYY-MM-DD")
-    p.add_argument("--note")
-    p.add_argument("--talk", help="登壇タイトル (speaker のとき)")
+    p.add_argument("--name", help="カンファレンス名")
+    p.add_argument("--url", help="リンク先 URL")
+    p.add_argument("--date", help="開催日 (初日) YYYY-MM-DD")
+    p.add_argument("--end", help="最終日 YYYY-MM-DD (複数日開催のとき)")
+    p.add_argument("--roles", help=f"カンマ区切り: {', '.join(ROLES)}")
+    p.add_argument("--note", help="補足。登壇タイトルや記事・スライドのリンク ([text](url) 可)")
     p.add_argument("--yes", "-y", action="store_true", help="確認をスキップ (非対話)")
     p.add_argument("--pr", action="store_true", help="ブランチ作成・push・PR 作成まで行う")
     a = p.parse_args()
@@ -115,36 +139,30 @@ def main() -> int:
     if interactive:
         print(f"\n{GREEN}▸ カンファレンス履歴を追加します{RESET}  {DIM}(Ctrl-C で中断){RESET}\n")
 
-    entry = {
+    raw = {
         "name": a.name or ask("name", required=True, hint="カンファレンス名"),
         "url": a.url or ask("url", required=True, hint="https://..."),
-        "year": a.year or int(ask("year", default=str(dt.date.today().year), required=True)),
-        "role": a.role or ask_role(default=None),
+        "date": a.date or ask_date("date", required=True, hint="開催日 YYYY-MM-DD。複数日なら初日"),
+        "end": a.end if a.end is not None else (ask_date("end", required=False, hint="最終日 YYYY-MM-DD, 1日開催なら空") if interactive else ""),
+        "roles": a.roles or ask_roles(),
+        "note": a.note if a.note is not None else (ask("note", hint="登壇タイトル / 記事やスライドのリンク, 任意") if interactive else ""),
     }
-    date = a.date if a.date is not None else (ask("date", hint="YYYY-MM-DD, 任意") if interactive else "")
-    talk = a.talk if a.talk is not None else (
-        ask("talk", hint="登壇タイトル, 任意") if interactive and entry["role"] == "speaker" else ""
-    )
-    note = a.note if a.note is not None else (ask("note", hint="core / NOC / サブタイトル など, 任意") if interactive else "")
-    for k, v in (("date", date), ("talk", talk), ("note", note)):
-        if v:
-            entry[k] = v
-    entry["year"] = int(entry["year"])
+    raw = {k: v for k, v in raw.items() if v}
 
     try:
-        validate(entry)
+        entry = normalize(raw)
         entries = load()
     except ValidationError as e:
-        print(f"error: {e}", file=sys.stderr)
+        print(f"{RED}error:{RESET} {e}", file=sys.stderr)
         return 2
-    if any(e["url"] == entry["url"] and e["role"] == entry["role"] for e in entries):
-        print("error: 同じ url と role のエントリが既にあります", file=sys.stderr)
+    if any(e["url"] == entry["url"] and e["date"] == entry["date"] for e in entries):
+        print(f"{RED}error:{RESET} 同じ url と date のエントリが既にあります", file=sys.stderr)
         return 2
 
     if interactive:
         print(f"\n{BOLD}追加内容:{RESET}")
         for k, v in entry.items():
-            print(f"  {k:<5} {v}")
+            print(f"  {k:<6}{', '.join(v) if isinstance(v, list) else v}")
         if ask("\nこの内容で追加しますか?", default="y", hint="y/n").lower() not in ("y", "yes"):
             print("中断しました")
             return 1

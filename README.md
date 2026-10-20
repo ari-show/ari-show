@@ -74,106 +74,106 @@
 
 <!-- CONFERENCES:START -->
 <!-- このセクションは data/conferences.yml から scripts/build_readme.py で自動生成されます。直接編集しないでください。 -->
-<p align="center"><sub>Speaker 1 ・ Staff 8 ・ Attendee 6</sub></p>
+<p align="center"><sub>登壇者 1 ・ コアスタッフ 3 ・ 当日スタッフ 5 ・ NOC 1 ・ 参加者 6</sub></p>
 
 <table>
   <thead>
     <tr>
-      <th align="left">Role</th>
-      <th align="left">Year</th>
+      <th align="left">Date</th>
       <th align="left">Conference</th>
+      <th align="left">Role</th>
       <th align="left">Note</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><img src="https://img.shields.io/badge/-Speaker-bf91f3?style=flat-square" alt="Speaker" /></td>
-      <td>2024</td>
-      <td><a href="https://fortee.jp/techramen-24-conf/proposal/022cb6b6-3d5a-48a4-be41-2d4dc3e1163b">TechRAMEN 2024 Conference</a></td>
-      <td>🎙️ セッション切れに苦しまない: DockerとJupyter Notebookの活用法</td>
-    </tr>
-    <tr>
-      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td>2025</td>
+      <td nowrap>2025-09-19~21</td>
       <td><a href="https://iosdc.jp/2025/">iOSDC Japan 2025</a></td>
-      <td>core, NOC</td>
-    </tr>
-    <tr>
-      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td>2025</td>
-      <td><a href="https://kichijojipm.connpass.com/event/361631/">大吉祥寺.pm 2025</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Core%20Staff-70a5fd?style=flat-square" alt="コアスタッフ" title="コアスタッフ" /> <img src="https://img.shields.io/badge/-NOC-ff9e64?style=flat-square" alt="NOC" title="NOC" /></td>
       <td></td>
     </tr>
     <tr>
-      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td>2025</td>
+      <td nowrap>2025-09-06</td>
+      <td><a href="https://kichijojipm.connpass.com/event/361631/">大吉祥寺.pm 2025</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Staff-7aa2f7?style=flat-square" alt="当日スタッフ" title="当日スタッフ" /></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td nowrap>2025-07-13</td>
       <td><a href="https://supporterz-seminar.connpass.com/event/355775/">CoLab Conf（コラコン）</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Staff-7aa2f7?style=flat-square" alt="当日スタッフ" title="当日スタッフ" /></td>
       <td>U35エンジニアの生存戦略を考えるテックカンファレンス</td>
     </tr>
     <tr>
-      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td>2025</td>
+      <td nowrap>2025-06-28</td>
       <td><a href="https://phpcon.php.gr.jp/2025/">PHP Conference Japan 2025</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Staff-7aa2f7?style=flat-square" alt="当日スタッフ" title="当日スタッフ" /></td>
       <td></td>
     </tr>
     <tr>
-      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td>2025</td>
+      <td nowrap>2025-04-12</td>
+      <td><a href="https://phpcon-odawara.jp/2025/">PHP Conference Odawara 2025</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="参加者" title="参加者" /></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td nowrap>2025-03-21~23</td>
       <td><a href="https://phperkaigi.jp/2025/">PHPerKaigi 2025</a></td>
-      <td>core</td>
-    </tr>
-    <tr>
-      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td>2025</td>
-      <td><a href="https://kinoko-conf.dev/">エンジニアがこの先生き残るためのカンファレンス</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Core%20Staff-70a5fd?style=flat-square" alt="コアスタッフ" title="コアスタッフ" /></td>
       <td></td>
     </tr>
     <tr>
-      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td>2024</td>
-      <td><a href="https://iosdc.jp/2024/">iOSDC Japan 2024</a></td>
-      <td>core</td>
+      <td nowrap>2025-03-09</td>
+      <td><a href="https://kinoko-conf.dev/">きのこカンファレンス2025</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Staff-7aa2f7?style=flat-square" alt="当日スタッフ" title="当日スタッフ" /></td>
+      <td>エンジニアがこの先生きのこるためのカンファレンス</td>
     </tr>
     <tr>
-      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td>2024</td>
-      <td><a href="https://phperkaigi.jp/2024/">PHPerKaigi 2024</a></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
-      <td>2025</td>
-      <td><a href="https://phpcon-odawara.jp/">PHP Conference Odawara 2025</a></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
-      <td>2024</td>
+      <td nowrap>2024-12-22</td>
       <td><a href="https://phpcon.php.gr.jp/2024/">PHP Conference Japan 2024</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="参加者" title="参加者" /></td>
       <td></td>
     </tr>
     <tr>
-      <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
-      <td>2024</td>
+      <td nowrap>2024-10-05</td>
       <td><a href="https://yapcjapan.org/2024hakodate/">YAPC::Hakodate 2024</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="参加者" title="参加者" /></td>
       <td></td>
     </tr>
     <tr>
-      <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
-      <td>2024</td>
+      <td nowrap>2024-09-27~28</td>
       <td><a href="https://2024.pycon.jp/ja">PyCon JP 2024</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="参加者" title="参加者" /></td>
       <td></td>
     </tr>
     <tr>
-      <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
-      <td>2024</td>
+      <td nowrap>2024-08-22~24</td>
+      <td><a href="https://iosdc.jp/2024/">iOSDC Japan 2024</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Core%20Staff-70a5fd?style=flat-square" alt="コアスタッフ" title="コアスタッフ" /></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td nowrap>2024-07-26~27</td>
+      <td><a href="https://techramenconf.net/2024/">TechRAMEN 2024 Conference</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Speaker-bf91f3?style=flat-square" alt="登壇者" title="登壇者" /></td>
+      <td><a href="https://fortee.jp/techramen-24-conf/proposal/022cb6b6-3d5a-48a4-be41-2d4dc3e1163b">セッション切れに苦しまない: DockerとJupyter Notebookの活用法</a></td>
+    </tr>
+    <tr>
+      <td nowrap>2024-07-13</td>
       <td><a href="https://kichijojipm.connpass.com/event/314917/">大吉祥寺.pm 2024</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="参加者" title="参加者" /></td>
       <td></td>
     </tr>
     <tr>
-      <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
-      <td>2024</td>
-      <td><a href="https://phpcon-odawara.jp/">PHP Conference Odawara 2024</a></td>
+      <td nowrap>2024-04-13</td>
+      <td><a href="https://phpcon-odawara.jp/2024/">PHP Conference Odawara 2024</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="参加者" title="参加者" /></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td nowrap>2024-03-07~09</td>
+      <td><a href="https://phperkaigi.jp/2024/">PHPerKaigi 2024</a></td>
+      <td nowrap><img src="https://img.shields.io/badge/-Staff-7aa2f7?style=flat-square" alt="当日スタッフ" title="当日スタッフ" /></td>
       <td></td>
     </tr>
   </tbody>
