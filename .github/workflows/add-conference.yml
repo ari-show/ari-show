@@ -1,0 +1,84 @@
+name: Add conference
+
+# Actions タブ → "Add conference" → Run workflow でフォーム入力するだけで PR ができます。
+# CLI からも同じことができます:
+#   gh workflow run add-conference.yml -f name="PHPerKaigi 2026" -f url=https://phperkaigi.jp/2026/ -f year=2026 -f role=staff -f note=core
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "カンファレンス名"
+        required: true
+        type: string
+      url:
+        description: "リンク先 URL"
+        required: true
+        type: string
+      year:
+        description: "開催年 (YYYY)"
+        required: true
+        type: string
+      role:
+        description: "役割"
+        required: true
+        type: choice
+        options: [speaker, staff, attendee]
+        default: attendee
+      date:
+        description: "開催日 YYYY-MM-DD (任意)"
+        required: false
+        type: string
+      note:
+        description: "補足: core / NOC / サブタイトル など (任意)"
+        required: false
+        type: string
+      talk:
+        description: "登壇タイトル (speaker のとき, 任意)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Add entry and rebuild README
+        env:
+          IN_NAME: ${{ inputs.name }}
+          IN_URL: ${{ inputs.url }}
+          IN_YEAR: ${{ inputs.year }}
+          IN_ROLE: ${{ inputs.role }}
+          IN_DATE: ${{ inputs.date }}
+          IN_NOTE: ${{ inputs.note }}
+          IN_TALK: ${{ inputs.talk }}
+        run: |
+          uv run scripts/add_conference.py --yes \
+            --name "$IN_NAME" --url "$IN_URL" --year "$IN_YEAR" --role "$IN_ROLE" \
+            --date "$IN_DATE" --note "$IN_NOTE" --talk "$IN_TALK"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: conference/${{ github.run_id }}
+          title: "Add conference: ${{ inputs.name }} (${{ inputs.role }})"
+          commit-message: "Add conference: ${{ inputs.name }} (${{ inputs.role }})"
+          body: |
+            - **name**: ${{ inputs.name }}
+            - **url**: ${{ inputs.url }}
+            - **year**: ${{ inputs.year }}
+            - **role**: ${{ inputs.role }}
+            - **date**: ${{ inputs.date }}
+            - **note**: ${{ inputs.note }}
+            - **talk**: ${{ inputs.talk }}
+
+            Created by the "Add conference" workflow (run by @${{ github.actor }}).
+          labels: conference
+          delete-branch: true

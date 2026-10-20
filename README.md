@@ -72,10 +72,15 @@
 
 ## 🎤 Conferences
 
+<!-- CONFERENCES:START -->
+<!-- このセクションは data/conferences.yml から scripts/build_readme.py で自動生成されます。直接編集しないでください。 -->
+<p align="center"><sub>Speaker 1 ・ Staff 8 ・ Attendee 6</sub></p>
+
 <table>
   <thead>
     <tr>
       <th align="left">Role</th>
+      <th align="left">Year</th>
       <th align="left">Conference</th>
       <th align="left">Note</th>
     </tr>
@@ -83,81 +88,97 @@
   <tbody>
     <tr>
       <td><img src="https://img.shields.io/badge/-Speaker-bf91f3?style=flat-square" alt="Speaker" /></td>
+      <td>2024</td>
       <td><a href="https://fortee.jp/techramen-24-conf/proposal/022cb6b6-3d5a-48a4-be41-2d4dc3e1163b">TechRAMEN 2024 Conference</a></td>
-      <td>セッション切れに苦しまない: Docker と Jupyter Notebook の活用法</td>
+      <td>🎙️ セッション切れに苦しまない: DockerとJupyter Notebookの活用法</td>
     </tr>
     <tr>
       <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td><a href="https://phperkaigi.jp/2024/">PHPerKaigi 2024</a></td>
-      <td></td>
+      <td>2025</td>
+      <td><a href="https://iosdc.jp/2025/">iOSDC Japan 2025</a></td>
+      <td>core, NOC</td>
     </tr>
     <tr>
       <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td><a href="https://iosdc.jp/2024/">iOSDC Japan 2024</a></td>
-      <td>core</td>
-    </tr>
-    <tr>
-      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td><a href="https://kinoko-conf.dev/">エンジニアがこの先生き残るためのカンファレンス</a></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td><a href="https://phperkaigi.jp/2025/">PHPerKaigi 2025</a></td>
-      <td>core</td>
-    </tr>
-    <tr>
-      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td><a href="https://phpcon.php.gr.jp/2025/">PHP Conference Japan 2025</a></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td><a href="https://supporterz-seminar.connpass.com/event/355775/">CoLab Conf（コラコン）</a></td>
-      <td>U35 エンジニアの生存戦略を考えるテックカンファレンス</td>
-    </tr>
-    <tr>
-      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
+      <td>2025</td>
       <td><a href="https://kichijojipm.connpass.com/event/361631/">大吉祥寺.pm 2025</a></td>
       <td></td>
     </tr>
     <tr>
       <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
-      <td><a href="https://iosdc.jp/2025/">iOSDC Japan 2025</a></td>
-      <td>core, NOC</td>
+      <td>2025</td>
+      <td><a href="https://supporterz-seminar.connpass.com/event/355775/">CoLab Conf（コラコン）</a></td>
+      <td>U35エンジニアの生存戦略を考えるテックカンファレンス</td>
     </tr>
     <tr>
-      <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
-      <td><a href="https://phpcon-odawara.jp/">PHP Conference Odawara 2024</a></td>
+      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
+      <td>2025</td>
+      <td><a href="https://phpcon.php.gr.jp/2025/">PHP Conference Japan 2025</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
+      <td>2025</td>
+      <td><a href="https://phperkaigi.jp/2025/">PHPerKaigi 2025</a></td>
+      <td>core</td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
+      <td>2025</td>
+      <td><a href="https://kinoko-conf.dev/">エンジニアがこの先生き残るためのカンファレンス</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
+      <td>2024</td>
+      <td><a href="https://iosdc.jp/2024/">iOSDC Japan 2024</a></td>
+      <td>core</td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/-Staff-70a5fd?style=flat-square" alt="Staff" /></td>
+      <td>2024</td>
+      <td><a href="https://phperkaigi.jp/2024/">PHPerKaigi 2024</a></td>
       <td></td>
     </tr>
     <tr>
       <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
-      <td><a href="https://kichijojipm.connpass.com/event/314917/">大吉祥寺.pm 2024</a></td>
+      <td>2025</td>
+      <td><a href="https://phpcon-odawara.jp/">PHP Conference Odawara 2025</a></td>
       <td></td>
     </tr>
     <tr>
       <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
-      <td><a href="https://2024.pycon.jp/ja">PyCon JP 2024</a></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
-      <td><a href="https://yapcjapan.org/2024hakodate/">YAPC::Hakodate 2024</a></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
+      <td>2024</td>
       <td><a href="https://phpcon.php.gr.jp/2024/">PHP Conference Japan 2024</a></td>
       <td></td>
     </tr>
     <tr>
       <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
-      <td><a href="https://phpcon-odawara.jp/">PHP Conference Odawara 2025</a></td>
+      <td>2024</td>
+      <td><a href="https://yapcjapan.org/2024hakodate/">YAPC::Hakodate 2024</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
+      <td>2024</td>
+      <td><a href="https://2024.pycon.jp/ja">PyCon JP 2024</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
+      <td>2024</td>
+      <td><a href="https://kichijojipm.connpass.com/event/314917/">大吉祥寺.pm 2024</a></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><img src="https://img.shields.io/badge/-Attendee-38bdae?style=flat-square" alt="Attendee" /></td>
+      <td>2024</td>
+      <td><a href="https://phpcon-odawara.jp/">PHP Conference Odawara 2024</a></td>
       <td></td>
     </tr>
   </tbody>
 </table>
+<!-- CONFERENCES:END -->
 
 <br />
 

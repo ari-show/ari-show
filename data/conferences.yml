@@ -1,0 +1,94 @@
+# カンファレンス参加履歴の唯一の正 (single source of truth)
+#
+# README の Conferences セクションはこのファイルから自動生成されます。
+# 追加は `uv run scripts/add_conference.py` か、GitHub Actions の
+# "Add conference" ワークフロー(手動実行)から行ってください。
+#
+# フィールド:
+#   name : カンファレンス名 (必須)
+#   url  : リンク先 (必須)
+#   year : 開催年 (必須)
+#   role : speaker | staff | attendee (必須)
+#   date : 開催日 YYYY-MM-DD (任意。並び順に使う)
+#   note : 補足。担当 (core, NOC) やサブタイトルなど (任意)
+#   talk : 登壇タイトル。role が speaker のとき (任意)
+
+- name: TechRAMEN 2024 Conference
+  url: https://fortee.jp/techramen-24-conf/proposal/022cb6b6-3d5a-48a4-be41-2d4dc3e1163b
+  year: 2024
+  role: speaker
+  talk: 'セッション切れに苦しまない: DockerとJupyter Notebookの活用法'
+
+- name: PHPerKaigi 2024
+  url: https://phperkaigi.jp/2024/
+  year: 2024
+  role: staff
+
+- name: iOSDC Japan 2024
+  url: https://iosdc.jp/2024/
+  year: 2024
+  role: staff
+  note: core
+
+- name: エンジニアがこの先生き残るためのカンファレンス
+  url: https://kinoko-conf.dev/
+  year: 2025
+  role: staff
+
+- name: PHPerKaigi 2025
+  url: https://phperkaigi.jp/2025/
+  year: 2025
+  role: staff
+  note: core
+
+- name: PHP Conference Japan 2025
+  url: https://phpcon.php.gr.jp/2025/
+  year: 2025
+  role: staff
+
+- name: CoLab Conf（コラコン）
+  url: https://supporterz-seminar.connpass.com/event/355775/
+  year: 2025
+  role: staff
+  note: U35エンジニアの生存戦略を考えるテックカンファレンス
+
+- name: 大吉祥寺.pm 2025
+  url: https://kichijojipm.connpass.com/event/361631/
+  year: 2025
+  role: staff
+
+- name: iOSDC Japan 2025
+  url: https://iosdc.jp/2025/
+  year: 2025
+  role: staff
+  note: core, NOC
+
+- name: PHP Conference Odawara 2024
+  url: https://phpcon-odawara.jp/
+  year: 2024
+  role: attendee
+
+- name: 大吉祥寺.pm 2024
+  url: https://kichijojipm.connpass.com/event/314917/
+  year: 2024
+  role: attendee
+
+- name: PyCon JP 2024
+  url: https://2024.pycon.jp/ja
+  year: 2024
+  role: attendee
+
+- name: YAPC::Hakodate 2024
+  url: https://yapcjapan.org/2024hakodate/
+  year: 2024
+  role: attendee
+
+- name: PHP Conference Japan 2024
+  url: https://phpcon.php.gr.jp/2024/
+  year: 2024
+  role: attendee
+
+- name: PHP Conference Odawara 2025
+  url: https://phpcon-odawara.jp/
+  year: 2025
+  role: attendee
