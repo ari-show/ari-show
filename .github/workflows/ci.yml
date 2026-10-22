@@ -22,6 +22,9 @@ on:
       - ".github/workflows/ci.yml"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 # 同じブランチで連続 push されたら古い実行は打ち切る
 concurrency:
   group: ci-${{ github.ref }}
@@ -36,7 +39,7 @@ jobs:
       run:
         working-directory: scripts
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: astral-sh/setup-uv@v6
         with:
