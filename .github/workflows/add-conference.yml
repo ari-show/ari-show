@@ -63,7 +63,7 @@ jobs:
   add:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: astral-sh/setup-uv@v6
         with:
@@ -109,7 +109,7 @@ jobs:
             --roles "$IN_ROLES" --note "$IN_NOTE"
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           branch: conference/${{ github.run_id }}
           title: "Add conference: ${{ inputs.name }} (${{ steps.roles.outputs.roles }})"
