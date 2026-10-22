@@ -10,7 +10,7 @@
     <a href="https://speakerdeck.com/arishow"><img src="https://img.shields.io/badge/Speaker%20Deck-arishow-009287?style=for-the-badge&logo=speakerdeck&logoColor=white" alt="Speaker Deck" /></a>
   </p>
 
-  <img src="https://visitor-badge.laobi.icu/badge?page_id=ari-show.ari-show&left_color=1a1b27&right_color=70a5fd&left_text=visitors" alt="visitors" />
+  <!--<img src="https://visitor-badge.laobi.icu/badge?page_id=ari-show.ari-show&left_color=1a1b27&right_color=70a5fd&left_text=visitors" alt="visitors" /> -->
 </div>
 
 <br />
