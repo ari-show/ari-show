@@ -1,7 +1,7 @@
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:70a5fd,50:bf91f3,100:38bdae&height=200&section=header&text=arishow&fontSize=72&fontColor=ffffff&fontAlignY=38&desc=Graduate%20Student%20%2F%20Engineer%20%7C%20Kawasaki%2C%20Japan&descAlignY=58&descSize=18&animation=fadeIn" width="100%" alt="header" />
 
-  <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=70A5FD&center=true&vCenter=true&width=600&lines=Hi+%F0%9F%91%8B+I'm+arishow+(%E5%AD%A6%E7%94%9F%E5%AE%A4%E3%81%AE%E4%BD%8F%E4%BA%BA);Python+%2F+PHP+%2F+Machine+Learning;Conference+staff+%26+speaker;Living+in+the+lab+room+%F0%9F%8F%A0" alt="typing" /></a>
+  <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=70A5FD&center=true&vCenter=true&width=600&lines=Hi+%F0%9F%91%8B+I'm+arishow+(%E5%AD%A6%E7%94%9F%E5%AE%A4%E3%81%AE%E4%BD%8F%E4%BA%BA);Python+%2F+Machine+Learning;Conference+staff+%26+speaker;Living+in+the+lab+room+%F0%9F%8F%A0" alt="typing" /></a>
 
   <p>
     <a href="https://ari-show.com/"><img src="https://img.shields.io/badge/Portfolio-ari--show.com-38bdae?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Portfolio" /></a>
