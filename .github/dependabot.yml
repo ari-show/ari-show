@@ -1,0 +1,47 @@
+# Dependabot version updates の設定
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+#
+# - github-actions: .github/workflows/*.yml の uses: を更新
+# - uv: scripts/pyproject.toml と scripts/uv.lock を更新
+#
+# cooldown: 公開直後のバージョンは避ける (乗っ取られたパッケージ等のサプライチェーン攻撃対策)。
+#           脆弱性修正 (security updates) には cooldown は適用されないので即座に PR が来ます。
+# groups:   minor / patch はまとめて 1 PR にして、レビューの手間を減らす。
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    commit-message:
+      prefix: "ci"
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: "uv"
+    directory: "/scripts"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    groups:
+      python-deps:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    open-pull-requests-limit: 5
