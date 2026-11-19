@@ -15,11 +15,13 @@
 
 <br />
 
+[![Dependabot Updates](https://github.com/ari-show/ari-show/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/ari-show/ari-show/actions/workflows/dependabot/dependabot-updates)
+
 ## 🧑‍💻 About Me
 
-- 🎓 日本の大学院生。研究室の「学生室」に家以上に入り浸っているので **学生室の住人** を名乗っています
-- 🔬 機械学習まわりの研究をしつつ、Web まわりは PHP / JavaScript で手を動かしています
-- 🎤 カンファレンスが好きで、参加者 → スタッフ → 登壇者とステップアップ中
+- 🎓 日本の大学院生。研究室の「学生室」に入り浸っている **学生室の住人** 
+- 🔬 機械学習まわりの研究をしつつ、インフラまわりなどを勉強中
+- 🎤 カンファレンス スタッフをいくつかしている
 - ✍️ アウトプットは [Qiita](https://qiita.com/arishow) と [Speaker Deck](https://speakerdeck.com/arishow) に置いています
 - 📍 Kawasaki, Japan
 
