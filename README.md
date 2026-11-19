@@ -14,7 +14,9 @@
 </div>
 
 <br />
+
 [![Dependabot Updates](https://github.com/ari-show/ari-show/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/ari-show/ari-show/actions/workflows/dependabot/dependabot-updates)
+
 ## 🧑‍💻 About Me
 
 - 🎓 日本の大学院生。研究室の「学生室」に入り浸っている **学生室の住人** 
